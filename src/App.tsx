@@ -50,14 +50,14 @@ function App() {
   return (
     <main className="min-h-screen flex justify-center items-center flex-col">
       { gameWon && <ReactConfetti /> }
-      <h1 className="text-6xl">Tenzies</h1>
-      <p className="text-lg m-5">Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
-      <div className="dark:bg-[#222] rounded-4xl p-10 m-10 grid grid-cols-3 sm:grid-cols-5 gap-4 shadow-[0_0_20px] dark:shadow-red-500">
+      <h1 className="text-6xl mt-5">Tenzies</h1>
+      <p className="text-lg m-5 text-center">Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
+      <div className="dark:bg-[#222] rounded-4xl p-10 m-10 grid grid-cols-2 nm:grid-cols-3 sm:grid-cols-5 gap-4 shadow-[0_0_20px] dark:shadow-red-500">
         {dieNumbers.map(dieObj => {
           return <Die key={dieObj.id} dieObj={dieObj} holdDice={() => holdDice(dieObj.id)}  />
         })}
       </div>
-      <button onClick={handleRollAllDices} className="rounded-md font-bold text-xl py-2 px-4 shadow-md dark:shadow-red-500 active:shadow-none transition-colors duration-500">{gameWon ? "New Game" : "Roll"}</button>
+      <button onClick={handleRollAllDices} className="rounded-md font-bold text-xl py-2 px-4 shadow-md dark:shadow-red-500 active:shadow-none transition-colors duration-500 mb-10">{gameWon ? "New Game" : "Roll"}</button>
     </main>
   )
 }

@@ -2,4 +2,5 @@
 
 @theme{
   --color-dark: #111;
+  --breakpoint-nm: 450px;
 }
