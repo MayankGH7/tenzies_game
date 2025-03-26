@@ -7,12 +7,21 @@
   --breakpoint-nm: 450px;
 }
 
+@utility die-face{
+  @apply size-3 rounded-full bg-white
+}
+
 body{
   font-family: "Inter";
 }
 
 .die-container{
-  box-shadow: 0 0 15px #FF3C3C, 0 0 30px #7A00FF inset;
+  box-shadow: 0 0 15px dodgerblue, 0 0 30px #7A00FF inset;
   backdrop-filter: blur(10px);
   background-color: transparent;
 }
+
+canvas{
+  position: fixed !important;
+}
+
