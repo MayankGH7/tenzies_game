@@ -2,5 +2,17 @@
 
 @theme{
   --color-dark: #111;
+  --color-holdDie: #00BFFF;
+
   --breakpoint-nm: 450px;
+}
+
+body{
+  font-family: "Inter";
+}
+
+.die-container{
+  box-shadow: 0 0 15px #FF3C3C, 0 0 30px #7A00FF inset;
+  backdrop-filter: blur(10px);
+  background-color: transparent;
 }

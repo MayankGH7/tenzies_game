@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import { nanoid } from "nanoid"
 import ReactConfetti from "react-confetti";
 
@@ -14,7 +14,24 @@ function App() {
 
   
   const [dieNumbers, setDieNumbers] = useState<DieType[]>(() => get10RandomDieNum());
+  const [confettiDim, setConfettiDim] = useState([window.innerWidth, window.innerHeight]);
+  const rollBtn = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const updateDimensions = () => {
+      setConfettiDim([window.innerWidth, window.innerHeight]);
+    };
+    
+    window.addEventListener("resize", updateDimensions);
+    return () => window.removeEventListener("resize", updateDimensions);
+  }, [])
+
   const gameWon = dieNumbers.every(obj => (obj.isHeld && obj.value == dieNumbers[0].value));
+
+  useEffect(() => {
+    if (gameWon) rollBtn.current?.focus();
+  }, [gameWon]);
+  // if(gameWon) rollBtn.current?.focus();
 
   function get10RandomDieNum(): DieType[] {
     return new Array(10)
@@ -26,10 +43,9 @@ function App() {
 
   function holdDice(id: string){
     setDieNumbers(prev => (
-      prev.map(obj => {
-        if(obj.id == id) obj.isHeld = !obj.isHeld;
-        return obj;
-      })
+      prev.map(obj => (
+        obj.id === id ? { ...obj, isHeld: !obj.isHeld } : obj
+      ))
     ))
   }
 
@@ -39,25 +55,24 @@ function App() {
       return;
     }
     setDieNumbers(prev => {
-      return prev.map(obj => {
-        if(!obj.isHeld) obj.value = Math.ceil(Math.random() * 6);
-        return obj;
-      })
+      return prev.map(obj => (
+        obj.isHeld ? obj : { ...obj, value: Math.ceil(Math.random() * 6) }
+      ))
     })
   }
 
 
   return (
     <main className="min-h-screen flex justify-center items-center flex-col">
-      { gameWon && <ReactConfetti /> }
+      { gameWon && <ReactConfetti width={confettiDim[0]}  height={confettiDim[1]}/> }
       <h1 className="text-6xl mt-5">Tenzies</h1>
       <p className="text-lg m-5 text-center">Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
-      <div className="dark:bg-[#222] rounded-4xl p-10 m-10 grid grid-cols-2 nm:grid-cols-3 sm:grid-cols-5 gap-4 shadow-[0_0_20px] dark:shadow-red-500">
+      <div className="die-container dark:bg-[#222] rounded-4xl p-10 m-10 grid grid-cols-2 nm:grid-cols-3 sm:grid-cols-5 gap-4 shadow-[0_0_20px]">
         {dieNumbers.map(dieObj => {
           return <Die key={dieObj.id} dieObj={dieObj} holdDice={() => holdDice(dieObj.id)}  />
         })}
       </div>
-      <button onClick={handleRollAllDices} className="rounded-md font-bold text-xl py-2 px-4 shadow-md dark:shadow-red-500 active:shadow-none transition-colors duration-500 mb-10">{gameWon ? "New Game" : "Roll"}</button>
+      <button ref={rollBtn} onClick={handleRollAllDices} className="rounded-md font-bold text-xl py-2 px-4 shadow-md dark:shadow-[dodgerblue] active:shadow-none transition-colors duration-500 mb-10">{gameWon ? "New Game" : "Roll"}</button>
     </main>
   )
 }
