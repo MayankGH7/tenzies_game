@@ -42,6 +42,7 @@ function App() {
   }
 
   function holdDice(id: string){
+    if(gameWon) return;
     setDieNumbers(prev => (
       prev.map(obj => (
         obj.id === id ? { ...obj, isHeld: !obj.isHeld } : obj
@@ -50,6 +51,7 @@ function App() {
   }
 
   function handleRollAllDices(){
+    console.log("Calling this ")
     if(gameWon){
       setDieNumbers(get10RandomDieNum());
       setRollCount(0);
